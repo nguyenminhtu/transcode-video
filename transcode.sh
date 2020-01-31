@@ -17,3 +17,5 @@ ffmpeg -i tmp/$title/$filename/video \
   -hls_base_url "../video/" \
   -hls_segment_filename "tmp/$title/$filename/output/video/v%v_file%d.ts" \
   tmp/$title/$filename/output/manifest/v%v.m3u8
+
+rm -rf tmp/$title/$filename/video

@@ -8,7 +8,7 @@ const resizeVideo = (url, title, fileName, option, streamMap) => {
   env.streamMap = streamMap;
 
   const ffmpegCommand = spawn(
-    `./test-transcode.sh`,
+    `./transcode.sh`,
     [`${url}`, `${title}`, `${fileName}`],
     { env }
   );
@@ -53,23 +53,23 @@ const run = () => {
     if (videoHeight > 720) {
       option = `
         -map 0:0 -map 0:1 -map 0:0 -map 0:1 \
-        -c:v:0 libx264 -filter:v:0 scale=720:-2 -b:v:0 2500k \
-        -c:v:1 libx264 -filter:v:1 scale=480:-2 -b:v:1 1200k \
+        -c:v:0 libx264 -filter:v:0 scale=720:-2 \
+        -c:v:1 libx264 -filter:v:1 scale=480:-2 \
         -c:a copy \
       `;
       streamMap = "v:0,a:0 v:1,a:1";
     } else if (videoHeight === 720) {
       option = `
         -map 0:0 -map 0:1 -map 0:0 -map 0:1 \
-        -c:v:0 copy -b:v:0 2500k \
-        -c:v:1 libx264 -filter:v:1 scale=480:-2 -b:v:1 1200k \
+        -c:v:0 copy \
+        -c:v:1 libx264 -filter:v:1 scale=480:-2 \
         -c:a copy \
       `;
       streamMap = "v:0,a:0 v:1,a:1";
     } else if (videoHeight < 720 && videoHeight > 480) {
       option = `
         -map 0:0 -map 0:1 \
-        -c:v:0 libx264 -filter:v:0 scale=480:-2 -b:v:1 1200k \
+        -c:v:0 libx264 -filter:v:0 scale=480:-2 \
         -c:a copy \
       `;
       streamMap = "v:0,a:0";
